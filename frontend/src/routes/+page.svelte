@@ -2,6 +2,7 @@
     import { goto } from "$app/navigation";
     import { swipe } from 'svelte-gestures';
     import "$lib/components/CoverStack.svelte";
+    import lily from "$lib/animations/audio_wavelength.mp4";
 	import CoverStack from "$lib/components/CoverStack.svelte";
     
     let demo: boolean = true;
@@ -33,16 +34,18 @@
 
 
 <div use:swipe={{ timeframe: 300, minSwipeDistance: 100, touchAction: 'pan-y' }} on:swipe={handler} class="flex flex-col items-center justify-center my-6">
-    <CoverStack {demo}/>     
-
-    <div class="my-5">
-        <h1>
-            Auteur
-        </h1>
+    <CoverStack {demo}/>
+    
+    <div>
+        <video class= "h-16 my-4" autoplay loop>
+            <track kind="captions" />
+            <source src={lily} type="video/mp4">
+        </video>
     </div>
 
-    <div class="my-5">
-        <audio controls id="audio">
+    
+    <div>
+        <audio autoplay loop id="audio">
             <source src="ocean-waves-112906.mp3" type="audio/mpeg">
         </audio>
     </div>
