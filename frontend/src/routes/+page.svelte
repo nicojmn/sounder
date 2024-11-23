@@ -1,10 +1,17 @@
-<script>
+<script lang="ts">
+    import { goto } from "$app/navigation";
     import { swipe } from 'svelte-gestures';
+    import deezer_logo from "$lib/assets/images/deezer.svg";
+    import "$lib/components/CoverStack.svelte";
+	import CoverStack from "$lib/components/CoverStack.svelte";
+    
+    let demo: boolean = true;
+
     let direction;
     let likeActive = false;
     let dislikeActive = false;
   
-    function handler(event) {
+    function handler(event: any) {
       direction = event.detail.direction;
 
         // Activer les styles selon la direction du swipe
@@ -22,14 +29,12 @@
             dislikeActive = false;
         }, 300);
     }
-  </script>
+</script>
+
+
 
 <div use:swipe={{ timeframe: 300, minSwipeDistance: 100, touchAction: 'pan-y' }} on:swipe={handler} class="justify-items-center" id="Box-Music">
-    <div class="avatar">
-        <div class="w-80 rounded-xl">
-            <img src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" />
-        </div>
-    </div>       
+    <CoverStack {demo}/>     
 
     <div class="place-items-center my-5" id="Name">
         <h1>

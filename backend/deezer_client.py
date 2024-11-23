@@ -11,6 +11,9 @@ class Client(deezer.Client):
     def __init__(self):
         super().__init__()
 
+        if not "static" in os.listdir():
+            os.mkdir("static")
+
     def download_track(self, track_id: int, filename: str) -> None:
         """
         Download a track from Deezer
@@ -21,7 +24,7 @@ class Client(deezer.Client):
         if not f"track_{track_id}.mp3" in os.listdir("static"):
             track = self.get_track(track_id)
             response = requests.get(track.preview)
-            with open(filename, "wb") as file:
+            with open(f"static/{filename}", "wb") as file:
                 file.write(response.content)
         else:
             print("Track already downloaded")
@@ -36,5 +39,5 @@ class Client(deezer.Client):
         if not f"cover_{track_id}.jpg" in os.listdir("static"):
             track = self.get_track(track_id)
             response = requests.get(track.album.cover_xl)
-            with open(filename, "wb") as file:
+            with open(f"static/{filename}", "wb") as file:
                 file.write(response.content)
