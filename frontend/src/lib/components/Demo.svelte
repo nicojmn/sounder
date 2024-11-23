@@ -8,7 +8,7 @@
 
     // Fetch demo songs
     let demoSongId = [
-        3829144,
+        1906328537,
         803968452,
         72160317
     ]
@@ -19,6 +19,7 @@
             fetch(`http://localhost:8000/api/track/${id}`)
                 .then((response) => response.json())
                 .then((data) => {
+                    console.log(data)
                     info = [...info, data]
                 })
         })
@@ -26,6 +27,8 @@
 
     // decrement demo_count
     let demo_count = $state(3);
+    let audioElement: HTMLAudioElement | null = null;
+    let isPlaying = $state(true);
     // Swipe handler
     let direction;
     let likeActive = $state(false);
@@ -38,11 +41,11 @@
         if (direction === 'right') {
             likeActive = true;
             dislikeActive = false;
-            demo_count--;
+            decrement();
         } else if (direction === 'left') {
             dislikeActive = true;
             likeActive = false;
-            demo_count--;
+            decrement();
         }
 
         // Réinitialiser après un délai pour donner l'effet de relâchement
@@ -57,6 +60,28 @@
             goto('/front/auth/login');
         }
     })
+
+    function decrement() {
+        demo_count--;
+        let tmp = info[0];
+        info = info.slice(1);
+        info.push(tmp);
+
+        if (audioElement) {
+            audioElement.load();
+        }
+    }
+
+    function swapAudio() {
+        if (audioElement) {
+            if (isPlaying) {
+                audioElement.pause();
+            } else {
+                audioElement.play();
+            }
+            isPlaying = !isPlaying;
+        }
+    }
 
     onMount(() => {
         demo_fetch()
@@ -81,15 +106,24 @@
 
     
     <div>
-        <audio autoplay loop id="audio">
-            <source src="ocean-waves-112906.mp3" type="audio/mpeg">
+        <audio autoplay loop bind:this={audioElement}>
+            {#each info as song}
+                <source src={song.preview} type="audio/mpeg">
+            {/each}
         </audio>
+        <button class="btn btn-circle" aria-label="play" onclick={swapAudio}>
+            {#if isPlaying}
+                <i class="fi fi-rr-pause"></i>
+            {:else}
+                <i class="fi fi-rr-play"></i>
+            {/if}
+        </button>
     </div>
 
       <div class="my-5 space-x-36">
-        <button class="btn btn-outline btn-error mr-8 ml-6 {dislikeActive ? 'btn-active' : ''}" aria-label="dislike" onclick={() => {demo_count--}}>
+        <button class="btn btn-outline btn-error mr-8 ml-6 {dislikeActive ? 'btn-active' : ''}" aria-label="dislike" onclick={decrement}>
             <i class="fi fi-rr-cross" id="Dislike"></i></button>
-        <button class="btn btn-outline btn-success mr-6 ml-8 {likeActive ? 'btn-active' : ''}" aria-label="like" onclick={() => {demo_count--}}>
+        <button class="btn btn-outline btn-success mr-6 ml-8 {likeActive ? 'btn-active' : ''}" aria-label="like" onclick={decrement}>
             <i class="fi fi-rr-heart" id="Like"></i></button>
     </div>
     
