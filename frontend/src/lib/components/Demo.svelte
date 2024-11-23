@@ -12,7 +12,7 @@
         803968452,
         72160317
     ]
-    let info: any = []
+    let info:any = $state([]);
 
     function demo_fetch() {
         demoSongId.forEach((id) => {
