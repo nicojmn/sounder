@@ -1,6 +1,8 @@
 # Packages and built-in modules
+from re import S
 from fastapi import FastAPI, Request
-from fastapi.responses import FileResponse
+from fastapi.responses import FileResponse, RedirectResponse
+from fastapi.staticfiles import StaticFiles
 
 # Sounder modules
 from routers import auth
@@ -15,10 +17,12 @@ app = FastAPI(
     }
 )
 
+app.mount("/front", StaticFiles(directory="../frontend/build", html=True), name="frontend")
+
 # import routers here
 app.include_router(auth.router)
 
 # root route
 @app.get("/", response_class=FileResponse)
 async def read_root(request: Request):
-    return FileResponse("../frontend/build/index.html")
+    return RedirectResponse(url="/front/", status_code=302)
