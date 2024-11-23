@@ -27,9 +27,9 @@
 </script>
 
 {#if demo}
-        <div class="stack">
-            {#each info as song}
-                <img src={song.album.cover_medium} alt={song.title} class="rounded-lg" />
-            {/each}
-        </div>
+    <div class="stack">
+        {#each info as song}
+            <img src={song.album.cover_medium} alt={song.title} class="rounded-lg" />
+        {/each}
+    </div>
 {/if}

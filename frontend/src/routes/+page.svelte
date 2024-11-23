@@ -32,22 +32,22 @@
 
 
 
-<div use:swipe={{ timeframe: 300, minSwipeDistance: 100, touchAction: 'pan-y' }} on:swipe={handler} class="justify-items-center" id="Box-Music">
+<div use:swipe={{ timeframe: 300, minSwipeDistance: 100, touchAction: 'pan-y' }} on:swipe={handler} class="flex flex-col items-center justify-center my-6">
     <CoverStack {demo}/>     
 
-    <div class="place-items-center my-5" id="Name">
+    <div class="my-5">
         <h1>
             Auteur
         </h1>
     </div>
 
-    <div class="justify-items-center my-5"  id="Sound">
+    <div class="my-5">
         <audio controls id="audio">
             <source src="ocean-waves-112906.mp3" type="audio/mpeg">
         </audio>
     </div>
 
-      <div class="justify-items-center my-5 space-x-36" id="Choice">
+      <div class="my-5 space-x-36">
         <button class="btn btn-outline btn-error mr-8 ml-6 {dislikeActive ? 'btn-active' : ''}"><i class="fi fi-rr-cross" id="Dislike"></i></button>
         <button class="btn btn-outline btn-success mr-6 ml-8 {likeActive ? 'btn-active' : ''}"><i class="fi fi-rr-heart" id="Like"></i></button>
     </div>
