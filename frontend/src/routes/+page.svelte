@@ -1,7 +1,6 @@
 <script lang="ts">
     import { goto } from "$app/navigation";
     import { swipe } from 'svelte-gestures';
-    import deezer_logo from "$lib/assets/images/deezer.svg";
     import "$lib/components/CoverStack.svelte";
 	import CoverStack from "$lib/components/CoverStack.svelte";
     

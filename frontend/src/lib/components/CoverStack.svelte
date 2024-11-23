@@ -10,7 +10,7 @@
 
     function demo_fetch() {
         demoSongId.forEach((id) => {
-            fetch(`http://127.0.0.1:8000/api/track/${id}`)
+            fetch(`http://localhost:8000/api/track/${id}`)
                 .then((response) => response.json())
                 .then((data) => {
                     info = [...info, data]
@@ -27,11 +27,9 @@
 </script>
 
 {#if demo}
-    <div class="flex min-w-full items-center">
         <div class="stack">
             {#each info as song}
                 <img src={song.album.cover_medium} alt={song.title} class="rounded-lg" />
             {/each}
         </div>
-    </div>
 {/if}
