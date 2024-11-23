@@ -6,8 +6,6 @@ from fastapi.templating import Jinja2Templates
 # Sounder modules
 from routers import auth
 
-
-
 app = FastAPI()
 
 # import routers here
