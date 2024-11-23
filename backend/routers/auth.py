@@ -1,7 +1,10 @@
 from fastapi import APIRouter, status, Request
 from fastapi.responses import HTMLResponse
 
-router = APIRouter()
+router = APIRouter(
+    prefix="/auth",
+    tags=["auth"]
+)
 
 @router.get("/register", response_class=HTMLResponse, status_code=status.HTTP_200_OK)
 async def register(request: Request):
