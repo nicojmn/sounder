@@ -1,5 +1,4 @@
 # Packages and built-in modules
-from re import S
 from fastapi import FastAPI, Request
 from fastapi.responses import FileResponse, HTMLResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
@@ -27,21 +26,6 @@ app.include_router(api.router)
 @app.get("/", response_class=FileResponse)
 async def read_root(request: Request):
     return RedirectResponse(url="/front/", status_code=302)
-
-@app.get("/debug")
-async def debug(request: Request, search: str | None):
-    import deezer_client
-    with deezer_client.Client() as client:
-        if not search:    
-            client.download_track(3135556, f"track-{3135556}.mp3")
-            client.download_cover(3135556, f"cover-{3135556}.jpg")
-        else:
-            html = "<ul>"
-            tracks = client.search(search)
-            for track in tracks:
-                html += f"""<li>{track.title} - {track.artist.name} --- {track.id} </li>"""
-            html += "</ul>"
-            return HTMLResponse(content=html)
                 
         
 
