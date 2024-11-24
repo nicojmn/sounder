@@ -12,6 +12,7 @@
     let songBatch = $state(3);
 
     let audioElement: HTMLAudioElement | null = null;
+    let lilyElement: HTMLVideoElement | null = null;
     let isPlaying = $state(true);
     // Swipe handler
     let direction;
@@ -25,11 +26,11 @@
         if (direction === 'right') {
             likeActive = true;
             dislikeActive = false;
-            next_song();
+            next_song(true);
         } else if (direction === 'left') {
             dislikeActive = true;
             likeActive = false;
-            next_song();
+            next_song(false);
         }
 
         // Réinitialiser après un délai pour donner l'effet de relâchement
@@ -39,8 +40,9 @@
         }, 300);
     }
 
-    function next_song() {
+    function next_song(save: boolean = false) {
         songBatch--;
+        let song_to_add = info[0];
         info = info.slice(1);
         
         if (songBatch > 1) {
@@ -55,14 +57,29 @@
         if (audioElement) {
             audioElement.load();
         }
+
+        if (save) {
+            fetch(
+                `http://localhost:8000/api/playlist/add/${song_to_add.spotify_id}`,
+                {
+                    method: "POST"
+                }
+            )
+        }         
     }
 
     function swapAudio() {
         if (audioElement) {
             if (isPlaying) {
                 audioElement.pause();
+                if (lilyElement) {
+                    lilyElement.pause();
+                }
             } else {
                 audioElement.play();
+                if (lilyElement) {
+                    lilyElement.play();
+                }
             }
             isPlaying = !isPlaying;
         }
@@ -90,6 +107,7 @@
         fetch(`http://localhost:8000/api/song_deezer/${id}`)
             .then(res => res.json())
             .then(data => {
+                data.spotify_id = id
                 info = [...info, data]
             })
     }
@@ -115,7 +133,7 @@
         </div>
         
         <div>
-            <video class= "h-16 my-4" autoplay loop>
+            <video class= "h-16 my-4" autoplay loop bind:this={lilyElement}>
                 <track kind="captions" />
                 <source src={lily} type="video/mp4">
             </video>
@@ -138,9 +156,9 @@
         </div>
 
         <div class="my-5 space-x-36">
-            <button class="btn btn-outline btn-error mr-8 ml-6 {dislikeActive ? 'btn-active' : ''}" aria-label="dislike" onclick={next_song}>
+            <button class="btn btn-outline btn-error mr-8 ml-6 {dislikeActive ? 'btn-active' : ''}" aria-label="dislike" onclick={() => next_song(false)}>
                 <i class="fi fi-rr-cross" id="Dislike"></i></button>
-            <button class="btn btn-outline btn-success mr-6 ml-8 {likeActive ? 'btn-active' : ''}" aria-label="like" onclick={next_song}>
+            <button class="btn btn-outline btn-success mr-6 ml-8 {likeActive ? 'btn-active' : ''}" aria-label="like" onclick={() => next_song(true)}>
                 <i class="fi fi-rr-heart" id="Like"></i></button>
         </div>
     </div>

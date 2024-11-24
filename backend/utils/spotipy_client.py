@@ -18,14 +18,14 @@ class SPClient:
         # DANGER: Do not commit the .env file to the repository
         # VERY VERY DANGEROUS: Do not commit the .env file to the repository
         client_id = "77b69edab01e42dda135604004b54142"
-        secret = "5cb78a9a516b41e89668bfe8bc861b9d"
+        secret = "a6433747ea5149bba2e5b31ddeb14b50"
         redirect = "http://localhost:9090/callback"
 
         self.sp = spotipy.Spotify(auth_manager=spotipy.SpotifyOAuth(scope=scope, client_id=client_id, client_secret=secret, redirect_uri=redirect))
 
 
     def get_recommendations(self):
-        seed_genres = ["pop", "rock"]
+        seed_genres = ["children"]
         seed_artists = []
         seed_tracks = []
         saved_tracks = self.sp.current_user_saved_tracks(limit=5)
