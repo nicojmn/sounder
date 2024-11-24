@@ -112,6 +112,19 @@
             })
     }
 
+    function arrows(event: KeyboardEvent) {
+        if (event.key === "ArrowRight") {
+            console.log("right");
+            next_song(true);
+        } else if (event.key === "ArrowLeft") {
+            console.log("left");
+            next_song(false);
+        } else if (event.key === "e") {
+            console.log("e");
+            next_song(true);
+        }
+    }
+
     onMount(() => {
         console.log("onMount");
         getTracks().then(data => {
@@ -119,6 +132,12 @@
                 getTrackDeezer(track.id)
             }
         )});
+
+        window.addEventListener("keydown", arrows);
+
+        return () => {
+            window.removeEventListener("keydown", arrows);
+        };
     });
 </script>
 

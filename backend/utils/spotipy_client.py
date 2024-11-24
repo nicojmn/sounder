@@ -25,7 +25,7 @@ class SPClient:
 
 
     def get_recommendations(self):
-        seed_genres = ["children"]
+        seed_genres = ["pop", "rock", "hip-hop, rap"]
         seed_artists = []
         seed_tracks = []
         saved_tracks = self.sp.current_user_saved_tracks(limit=5)
